@@ -1,3 +1,4 @@
+from asyncio import constants
 import logging
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -27,11 +28,10 @@ def getLiveMatches(driver):
 def readConfig(filepath):
     with open(filepath, "r") as f:
         return yaml.safe_load(f)
-
-# def logIn(driver, username, password):
-#     driver.get("https://lolesports.com/")
-#     time.sleep(2)
-#     pass
+def logIn(driver, username, password):
+     driver.get("https://lolesports.com/")
+     time.sleep(2)
+     pass
 
 #https://auth.riotgames.com/login
 ###################################################
@@ -40,8 +40,8 @@ log.setLevel('DEBUG')
 chromedriver_autoinstaller.install()
 
 hasValidConfig = False
-username = None
-password = None
+username = 'treealots'
+password = 'Qweasd123'
 try:
     config = readConfig(CONFIG_LOCATION)
     hasValidConfig = True
@@ -52,7 +52,6 @@ except (yaml.scanner.ScannerError, yaml.parser.ParserError) as e:
     log.warn("Invalid configuration file. IGNORING...")
 
 options = webdriver.ChromeOptions() 
-options.add_argument('log-level=3')
 driver = webdriver.Chrome(options=options)
 driver.get("https://lolesports.com/")
 time.sleep(2)
@@ -69,8 +68,6 @@ originalWindow = driver.current_window_handle
 while True:
     driver.switch_to.window(originalWindow) # just to be sure
     time.sleep(5)
-    driver.get("https://lolesports.com/")
-    time.sleep(15)
     liveMatches = getLiveMatches(driver)
     log.info(f"{len(liveMatches)} matches live")
 
